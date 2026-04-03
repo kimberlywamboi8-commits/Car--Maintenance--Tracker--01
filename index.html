@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DriveCare Garage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-block">
+        <p class="brand-kicker">DriveCare</p>
+        <h1>Garage Control</h1>
+        <p class="brand-copy">Track every car, every refill, every service stop.</p>
+      </div>
+
+      <nav class="side-nav" aria-label="App sections">
+        <button class="nav-link active" data-page="dashboard">Dashboard</button>
+        <button class="nav-link" data-page="service">Add Service</button>
+        <button class="nav-link" data-page="fuel">Fuel Log</button>
+        <button class="nav-link" data-page="vehicles">Vehicle List</button>
+        <button class="nav-link" data-page="reports">Reports</button>
+      </nav>
+
+      <div class="theme-switcher">
+        <span>Theme</span>
+        <button id="theme-toggle" type="button" aria-label="Toggle dark mode">🌙 Dark mode</button>
+      </div>
+    </aside>
+
+    <section class="main-panel">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Active vehicle</p>
+          <h2 id="active-vehicle-name">No vehicle selected</h2>
+        </div>
+
+        <div class="topbar-actions">
+          <label class="vehicle-picker">
+            <span>Switch vehicle</span>
+            <select id="vehicle-switcher"></select>
+          </label>
+        </div>
+      </header>
+
+      <section class="page active" id="page-dashboard">
+        <div class="hero-card">
+          <div>
+            <p class="eyebrow">Dashboard</p>
+            <h3>Your garage at a glance</h3>
+            <p id="dashboard-subtitle">Add a vehicle to start tracking maintenance and fuel usage.</p>
+          </div>
+          <div class="hero-status">
+            <span>Next reminder</span>
+            <strong id="next-reminder-headline">No reminders yet</strong>
+            <p id="next-reminder-copy">Create a service record to generate maintenance alerts.</p>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <p class="stat-label">Fuel economy</p>
+            <strong id="stat-economy">-- mpg</strong>
+            <span id="stat-fuel-copy">Need at least two fuel logs</span>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">Open issues</p>
+            <strong id="stat-issues">0</strong>
+            <span id="stat-issues-copy">No logged problems</span>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">Last service</p>
+            <strong id="stat-service">Not yet</strong>
+            <span id="stat-service-copy">No service history yet</span>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">Garage vehicles</p>
+            <strong id="stat-vehicles">0</strong>
+            <span id="stat-vehicles-copy">Add more than one car and switch anytime</span>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Service timeline</p>
+                <h3>Recent maintenance</h3>
+              </div>
+            </div>
+            <div class="stack-list" id="dashboard-service-list"></div>
+          </article>
+
+          <article class="panel-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Vehicle health</p>
+                <h3>Logged problems</h3>
+              </div>
+            </div>
+            <div class="stack-list" id="dashboard-issue-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page" id="page-service">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Add Service</p>
+            <h3>Log maintenance and issues</h3>
+          </div>
+          <p class="section-copy">Capture oil, tires, brakes, inspections, and any problem your driver notices.</p>
+        </div>
+
+        <div class="form-grid">
+          <article class="panel-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Service form</p>
+                <h3>Maintenance entry</h3>
+              </div>
+            </div>
+
+            <form class="app-form" id="service-form">
+              <label>
+                Service type
+                <select id="service-type" required>
+                  <option value="">Choose service</option>
+                  <option value="Oil change">Oil change</option>
+                  <option value="Tire service">Tire service</option>
+                  <option value="Brake service">Brake service</option>
+                  <option value="Routine inspection">Routine inspection</option>
+                  <option value="Battery check">Battery check</option>
+                </select>
+              </label>
+              <label>
+                Date
+                <input type="date" id="service-date" required>
+              </label>
+              <label>
+                Odometer
+                <input type="number" id="service-odometer" min="0" step="1" required>
+              </label>
+              <label>
+                Notes
+                <input type="text" id="service-notes" maxlength="90" placeholder="Changed front pads and checked fluid">
+              </label>
+              <button type="submit">Save service</button>
+            </form>
+          </article>
+
+          <article class="panel-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Problem logger</p>
+                <h3>Report an issue</h3>
+              </div>
+            </div>
+
+            <form class="app-form" id="issue-form">
+              <label>
+                Problem
+                <select id="issue-name" required>
+                  <option value="">Choose problem</option>
+                  <option value="Engine noise">Engine noise</option>
+                  <option value="Brake squeaking">Brake squeaking</option>
+                  <option value="Oil leak">Oil leak</option>
+                  <option value="Vibration while driving">Vibration while driving</option>
+                  <option value="Check engine light">Check engine light</option>
+                </select>
+              </label>
+              <label>
+                Severity
+                <select id="issue-severity" required>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </label>
+              <label>
+                Date noticed
+                <input type="date" id="issue-date" required>
+              </label>
+              <label>
+                Details
+                <input type="text" id="issue-notes" maxlength="90" placeholder="Mostly happens when braking downhill">
+              </label>
+              <button type="submit">Log issue</button>
+            </form>
+          </article>
+        </div>
+      </section>
+
+      <section class="page" id="page-fuel">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Fuel Log</p>
+            <h3>Track consumption and spend</h3>
+          </div>
+          <p class="section-copy">Each fuel stop helps estimate efficiency and total running cost.</p>
+        </div>
+
+        <div class="form-grid fuel-layout">
+          <article class="panel-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">New fuel entry</p>
+                <h3>Refill details</h3>
+              </div>
+            </div>
+
+            <form class="app-form" id="fuel-form">
+              <label>
+                Date
+                <input type="date" id="fuel-date" required>
+              </label>
+              <label>
+                Odometer
+                <input type="number" id="fuel-odometer" min="0" step="1" required>
+              </label>
+              <label>
+                Gallons
+                <input type="number" id="fuel-gallons" min="0.1" step="0.1" required>
+              </label>
+              <label>
+                Cost
+                <input type="number" id="fuel-cost" min="0" step="0.01" required>
+              </label>
+              <button type="submit">Add fuel log</button>
+            </form>
+          </article>
+
+          <article class="panel-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">History</p>
+                <h3>Recent fill-ups</h3>
+              </div>
+            </div>
+
+            <div class="table-shell">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Odometer</th>
+                    <th>Gallons</th>
+                    <th>Cost</th>
+                  </tr>
+                </thead>
+                <tbody id="fuel-table-body"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page" id="page-vehicles">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Vehicle List</p>
+            <h3>Manage your garage</h3>
+          </div>
+          <p class="section-copy">Add more than one car, pick an active vehicle, and keep records separate.</p>
+        </div>
+
+        <div class="form-grid">
+          <article class="panel-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Add vehicle</p>
+                <h3>New car profile</h3>
+              </div>
+            </div>
+
+            <form class="app-form" id="vehicle-form">
+              <label>
+                Nickname
+                <input type="text" id="vehicle-name" maxlength="40" placeholder="Family SUV" required>
+              </label>
+              <label>
+                Make and model
+                <input type="text" id="vehicle-model" maxlength="50" placeholder="Toyota RAV4" required>
+              </label>
+              <label>
+                Year
+                <input type="number" id="vehicle-year" min="1980" max="2100" required>
+              </label>
+              <label>
+                Plate or tag
+                <input type="text" id="vehicle-plate" maxlength="20" placeholder="KDA 123A">
+              </label>
+              <button type="submit">Add vehicle</button>
+            </form>
+          </article>
+
+          <article class="panel-card">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Garage</p>
+                <h3>Your vehicles</h3>
+              </div>
+            </div>
+
+            <div class="vehicle-grid" id="vehicle-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page" id="page-reports">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Reports</p>
+            <h3>See the numbers</h3>
+          </div>
+          <p class="section-copy">Quick totals for fuel, services, issues, and upcoming reminders.</p>
+        </div>
+
+        <div class="reports-grid">
+          <article class="panel-card report-card">
+            <p class="eyebrow">Spend</p>
+            <strong id="report-fuel-spend">$0.00</strong>
+            <span>Total fuel spend for the active car</span>
+          </article>
+          <article class="panel-card report-card">
+            <p class="eyebrow">Service count</p>
+            <strong id="report-service-count">0</strong>
+            <span>Total maintenance records</span>
+          </article>
+          <article class="panel-card report-card">
+            <p class="eyebrow">Issue count</p>
+            <strong id="report-issue-count">0</strong>
+            <span>Problems currently logged</span>
+          </article>
+          <article class="panel-card report-card">
+            <p class="eyebrow">Upcoming reminders</p>
+            <strong id="report-reminder-count">0</strong>
+            <span>Service reminders generated</span>
+          </article>
+        </div>
+
+        <article class="panel-card">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Summary</p>
+              <h3>Vehicle report</h3>
+            </div>
+          </div>
+          <div class="stack-list" id="report-summary-list"></div>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
